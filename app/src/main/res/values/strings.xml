@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">TaskApp</string>
+    <string name="tab_text_1">Бугун</string>
+    <string name="tab_text_2">Эртен</string>
+    <string name="tab_text_3">Жакында</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
