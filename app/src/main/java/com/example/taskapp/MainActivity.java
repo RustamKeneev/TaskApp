@@ -27,16 +27,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClick(View view) {
-       startActivityForResult(new Intent(this,TaskActivity.class),100);
+       startActivity(new Intent(this,TaskActivity.class));
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (resultCode ==RESULT_OK && requestCode==100){
-            Task task  = (Task) data.getSerializableExtra("task");
-            Log.e("TAG","title" + task.getTitle());
-            Log.e("TAG","date "+task.getDate());
-
-        }
-    }
 }

@@ -1,5 +1,6 @@
 package com.example.taskapp.ui.main.Adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
@@ -12,9 +13,11 @@ import com.example.taskapp.ui.main.Fragments.PlaceholderFragment;
 
 public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
+    @SuppressLint("SupportAnnotationUsage")
     @StringRes
-    private static final int[] TAB_TITLES = new int[]{R.string.tab_text_1, R.string.tab_text_2,R.string.tab_text_3};
     private final Context mContext;
+    private static final int[] TAB_TITLES = new int[]{R.string.tab_text_1, R.string.tab_text_2,R.string.tab_text_3};
+
 
     public SectionsPagerAdapter(Context context, FragmentManager fm) {
         super(fm);

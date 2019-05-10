@@ -1,20 +1,29 @@
 package com.example.taskapp.ui.main.Model;
 
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+
 import java.io.Serializable;
 import java.util.Date;
 
+@Entity
 public class Task implements Serializable {
+
+    @PrimaryKey(autoGenerate = true)
+    private long id;
     private String title;
     private String description;
-    private Date date;
+    private long time;
 
     public Task() {
     }
 
-    public Task(String title, String description, Date date) {
-        this.title = title;
-        this.description = description;
-        this.date = date;
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getTitle() {
@@ -33,11 +42,11 @@ public class Task implements Serializable {
         this.description = description;
     }
 
-    public Date getDate() {
-        return date;
+    public long getTime() {
+        return time;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setTime(long time) {
+        this.time = time;
     }
 }

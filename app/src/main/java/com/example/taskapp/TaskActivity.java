@@ -23,11 +23,8 @@ public class TaskActivity extends AppCompatActivity {
     private TextInputEditText textInputEditTextTitle;
     private TextInputEditText textInputEditTextDescription;
 
-    private Button currentData;
-    private Button button_save;
-
-    Date date;
-
+    long time;
+    Task task;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,25 +37,12 @@ public class TaskActivity extends AppCompatActivity {
         textInputLayoutDescription = findViewById(R.id.description_text_input);
         textInputEditTextDescription = findViewById(R.id.description_input_edit_text);
 
-        currentData = findViewById(R.id.set_data_button);
-        button_save = findViewById(R.id.save_button);
+        task = (Task) getIntent().getSerializableExtra("task");
+        if (task !=null){
+            textInputEditTextTitle.setText(task.getTitle());
+            textInputEditTextDescription.setText(task.getDescription());
+        }
 
-//        currentData.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                DialogFragment newFragment = new DatePickerFragment();
-//                newFragment.show(getSupportFragmentManager(),"date picker");
-//            }
-//        });
-
-//        button_save.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                String title  =  textInputEditTextTitle.getText().toString().trim();
-//                Toast.makeText(TaskActivity.this,
-//                        "Азырынча сиздин маселениз жакында сакталат, чыдап турунуз",Toast.LENGTH_SHORT).show();
-//            }
-//        });
 
         textInputEditTextTitle.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -97,7 +81,7 @@ public class TaskActivity extends AppCompatActivity {
     }
 
     public void onClickDate(View view) {
-        Calendar calendar = Calendar.getInstance();
+        final Calendar calendar = Calendar.getInstance();
         final DatePickerDialog datePickerDialog = new DatePickerDialog(
                 this,
                 0,
@@ -110,13 +94,12 @@ public class TaskActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 int day = datePickerDialog.getDatePicker().getDayOfMonth();
-                int month = datePickerDialog.getDatePicker().getMonth()+1;
+                int month = datePickerDialog.getDatePicker().getMonth();
                 int year = datePickerDialog.getDatePicker().getYear();
 
                 Calendar calendar1 = Calendar.getInstance();
-                calendar1.set(day,month,year);
-
-                date = calendar1.getTime();
+                calendar1.set(year,month,day);
+                time = calendar1.getTimeInMillis();
 
             }
         });
@@ -126,17 +109,21 @@ public class TaskActivity extends AppCompatActivity {
     public void onClickSave(View view) {
         String title = textInputEditTextTitle.getText().toString().trim();
         String description = textInputEditTextDescription.getText().toString().trim();
+        if (time ==0) time = System.currentTimeMillis();
 
-        Task task = new Task();
-        task.setTitle(title);
-        task.setDescription(description);
+        if (task !=null){
+            task.setTitle(title);
+            task.setDescription(description);
+            task.setTime(time);
+            App.getInstance().getAppDatabase().taskDao().update(task);
+        }else {
 
-        task.setDate(date);
-
-        Intent intent = new Intent();
-        intent.putExtra("task",task);
-        setResult(RESULT_OK,intent);
+            Task task = new Task();
+            task.setTitle(title);
+            task.setDescription(description);
+            task.setTime(time);
+            App.getInstance().getAppDatabase().taskDao().insert(task);
+        }
         finish();
-
     }
 }
